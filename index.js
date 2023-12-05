@@ -90,4 +90,5 @@ app.post('/signup', async(req, res) => {
   }
 });
 
-app.listen(8000, () => console.log("Express Server started on port 8000"));
+const HTTP_PORT = process.env.PORT || 8000;
+app.listen(HTTP_PORT, () => console.log(`Express Server started on port ${HTTP_PORT}`));
