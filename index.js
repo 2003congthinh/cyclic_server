@@ -17,13 +17,23 @@ app.use(cors())
 
 // code here
 // Schema handler
-const accountschema = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
   "email": String,
   "password": String,
   "name": String
 })
 
-const accounts = new mongoose.model('testData', accountschema, 'test') // name - schema - collection
+const siteSchema = new mongoose.Schema({
+  "id": String,
+  "criteria": Number,
+  "location": Array,
+  "name": String,
+  "joined_people": Array,
+  "owner": String
+})
+
+const accounts = new mongoose.model('testData', accountSchema, 'test') // name - schema - collection
+const sites = new mongoose.model('sitetData', siteSchema, 'sites')
 
 // Data handler
 app.get('/printAllData', async (req, res) => {
