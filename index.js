@@ -33,7 +33,7 @@ const siteSchema = new mongoose.Schema({
 })
 
 const accounts = new mongoose.model('testData', accountSchema, 'test') // name - schema - collection
-const sites = new mongoose.model('sitetData', siteSchema, 'sites')
+const site = new mongoose.model('sitetData', siteSchema, 'sites')
 
 // Data handler
 app.get('/printAllData', async (req, res) => {
