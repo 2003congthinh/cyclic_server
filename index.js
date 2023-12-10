@@ -26,14 +26,15 @@ const accountSchema = new mongoose.Schema({
 const siteSchema = new mongoose.Schema({
   "id": String,
   "criteria": Number,
-  "location": Array,
   "name": String,
+  "site_latitude": Number,
+  "site_longitude": Number,
   "joined_people": Array,
   "owner": String
 })
 
 const accounts = new mongoose.model('testData', accountSchema, 'test') // name - schema - collection
-const site = new mongoose.model('sitetData', siteSchema, 'sites')
+const sites = new mongoose.model('sitetData', siteSchema, 'sites')
 
 // Data handler
 app.get('/printAllData', async (req, res) => {
@@ -93,6 +94,32 @@ app.post('/signup', async(req, res) => {
     });
     await newAccount.save();
     return res.status(200).json({ message: 'Signup successful' });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'An error occurred' });
+  }
+});
+
+app.post('/createSite', async(req, res) => {
+  const { name, site_latitude, site_longitude, owner } = req.body;
+  try {
+    console.log('Received name:', name);
+    console.log('Received latitude:', site_latitude);
+    console.log('Received longitude:', site_longitude);
+    console.log('Received owner:', owner);
+    const siteExists = await sites.findOne({ name });
+    if (siteExists) { 
+      return res.status(400).json({ message: 'Site already created' });
+    }
+    const newSite = new sites({
+      name,
+      site_latitude,
+      site_longitude,
+      owner
+    });
+    await newSite.save();
+    return res.status(200).json({ message: 'Site created successfully' });
 
   } catch (error) {
     console.error(error);
