@@ -112,7 +112,10 @@ app.post('/createSite', async(req, res) => {
     if (siteExists) { 
       return res.status(400).json({ message: 'Site already created' });
     }
+    const numberOfSite = await sites.countDocuments()
+    const new_s_id = 's' + (numberOfSite + 1).toString()
     const newSite = new sites({
+      id: new_s_id,
       name,
       site_latitude,
       site_longitude,
