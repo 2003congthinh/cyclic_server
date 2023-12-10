@@ -37,6 +37,7 @@ const accounts = new mongoose.model('testData', accountSchema, 'test') // name -
 const sites = new mongoose.model('sitetData', siteSchema, 'sites')
 
 // Data handler
+// GET
 app.get('/printAllData', async (req, res) => {
   try {
     console.log(1)
@@ -48,6 +49,18 @@ app.get('/printAllData', async (req, res) => {
   }
 });
 
+app.get('/printAllSites', async (req, res) => {
+  try {
+    console.log(1)
+    const found_sites = await sites.find();
+    console.log(found_sites)
+    res.send(found_sites);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// POST
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
