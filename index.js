@@ -121,9 +121,14 @@ app.post('/createSite', async(req, res) => {
     console.log('Received latitude:', site_latitude);
     console.log('Received longitude:', site_longitude);
     console.log('Received owner:', owner);
+
     const siteExists = await sites.findOne({ name });
     if (siteExists) { 
       return res.status(400).json({ message: 'Site already created' });
+    }
+    const ownerExists = await sites.findOne({ owner });
+    if (ownerExists && owner != "dev") { 
+      return res.status(400).json({ message: 'You already created a site' });
     }
     const numberOfSite = await sites.countDocuments()
     const new_s_id = 's' + (numberOfSite + 1).toString()
@@ -140,6 +145,16 @@ app.post('/createSite', async(req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'An error occurred' });
+  }
+});
+
+app.post('/printMySites', async (req, res) => {
+  const { owner } = req.body;
+  try {
+    const result = await sites.find({ owner });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
   }
 });
 
