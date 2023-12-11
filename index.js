@@ -161,7 +161,7 @@ app.post('/printMySites', async (req, res) => {
 app.post('/findSearchSites', async (req, res) => {
   const { name } = req.body;
   try {
-    const result = await sites.findOne({ name });
+    const result = await sites.find({ name });
     res.json(result);
   } catch (error) {
     console.log(error);
