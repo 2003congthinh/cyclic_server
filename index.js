@@ -126,10 +126,10 @@ app.post('/createSite', async(req, res) => {
     if (siteExists) { 
       return res.status(400).json({ message: 'Site already created' });
     }
-    const ownerExists = await sites.findOne({ owner });
-    if (ownerExists && owner != "dev") { 
-      return res.status(400).json({ message: 'You already created a site' });
-    }
+    // const ownerExists = await sites.findOne({ owner });
+    // if (ownerExists && owner != "dev") { 
+    //   return res.status(400).json({ message: 'You already created a site' });
+    // }
     const numberOfSite = await sites.countDocuments()
     const new_s_id = 's' + (numberOfSite + 1).toString()
     const newSite = new sites({
