@@ -158,5 +158,15 @@ app.post('/printMySites', async (req, res) => {
   }
 });
 
+app.post('/findSearchSites', async (req, res) => {
+  const { name } = req.body;
+  try {
+    const result = await sites.findOne({ name });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const HTTP_PORT = process.env.PORT || 8000;
 app.listen(HTTP_PORT, () => console.log(`Express Server started on port ${HTTP_PORT}`));
