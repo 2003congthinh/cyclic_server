@@ -151,15 +151,22 @@ app.post('/createSite', async(req, res) => {
 app.post('/printMySites', async (req, res) => {
   const { owner } = req.body;
   try {
-    if (owner == "dev"){
-      const result = await sites.findAll();
-      res.json(result);
+    let results;
+
+    if (owner === "dev") {
+      results = await sites.findAll();
     } else {
-      const result = await sites.find({ owner });
-      res.json(result);
+      results = await sites.findAll({ where: { owner } });
     }
+
+    // Convert Sequelize instances to plain JavaScript objects
+    const jsonResults = results.map(result => result.toJSON());
+
+    // Send the JSON array in the response
+    res.json(jsonResults);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
