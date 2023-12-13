@@ -168,5 +168,27 @@ app.post('/findSearchSites', async (req, res) => {
   }
 });
 
+app.post('/joinInSite', async (req, res) => {
+  const { id, email } = req.body;
+  try {
+    const result = await sites.updateOne(
+      { "id": id },
+      { $push: { "joined_people": email } }
+    );
+
+    // Check if the update was successful
+    if (result.modifiedCount === 1) {
+      // Fetch the updated document
+      const updatedDocument = await sites.findOne({ "id": id });
+      return res.status(200).json({ message: 'Site created successfully' });
+    } else {
+      res.status(404).json({ error: "Document not found or not updated." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const HTTP_PORT = process.env.PORT || 8000;
 app.listen(HTTP_PORT, () => console.log(`Express Server started on port ${HTTP_PORT}`));
