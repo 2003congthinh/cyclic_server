@@ -151,22 +151,10 @@ app.post('/createSite', async(req, res) => {
 app.post('/printMySites', async (req, res) => {
   const { owner } = req.body;
   try {
-    let results;
-
-    if (owner === "dev") {
-      results = await sites.findAll();
-    } else {
-      results = await sites.findAll({ where: { owner } });
-    }
-
-    // Convert Sequelize instances to plain JavaScript objects
-    const jsonResults = results.map(result => result.toJSON());
-
-    // Send the JSON array in the response
-    res.json(jsonResults);
+    const result = await sites.find({ owner });
+    res.json(result);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -177,28 +165,6 @@ app.post('/findSearchSites', async (req, res) => {
     res.json(result);
   } catch (error) {
     console.log(error);
-  }
-});
-
-app.post('/joinInSite', async (req, res) => {
-  const { id, email } = req.body;
-  try {
-    const result = await sites.updateOne(
-      { "id": id },
-      { $push: { "joined_people": email } }
-    );
-
-    // Check if the update was successful
-    if (result.modifiedCount === 1) {
-      // Fetch the updated document
-      const updatedDocument = await sites.findOne({ "id": id });
-      return res.status(200).json({ message: 'Site created successfully' });
-    } else {
-      res.status(404).json({ error: "Document not found or not updated." });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal server error" });
   }
 });
 
