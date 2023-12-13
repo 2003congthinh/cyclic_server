@@ -151,8 +151,13 @@ app.post('/createSite', async(req, res) => {
 app.post('/printMySites', async (req, res) => {
   const { owner } = req.body;
   try {
-    const result = await sites.find({ owner });
-    res.json(result);
+    if (owner == "dev"){
+      const result = await sites.findAll();
+      res.json(result);
+    } else {
+      const result = await sites.find({ owner });
+      res.json(result);
+    }
   } catch (error) {
     console.log(error);
   }
