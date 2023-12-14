@@ -37,6 +37,19 @@ const accounts = new mongoose.model('testData', accountSchema, 'test') // name -
 const sites = new mongoose.model('sitetData', siteSchema, 'sites')
 
 // Data handler
+// TEST
+app.get('/testAdmin', async (req, res) => {
+  const owner1 = "dev";
+  const owner2 = "s3926387@rmit.edu.vn";
+  try {
+    const result1 = await sites.find({owner: owner1});
+    const result2 = await sites.find({owner: owner2});
+    res.send("Single owner: "+result1+" Admin owner: "+result2);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // GET
 app.get('/printAllData', async (req, res) => {
   try {
@@ -150,11 +163,20 @@ app.post('/createSite', async(req, res) => {
 
 app.post('/printMySites', async (req, res) => {
   const { owner } = req.body;
-  try {
-    const result = await sites.find({ owner });
-    res.json(result);
-  } catch (error) {
-    console.log(error);
+  if (owner == "dev"){
+    try {
+      const result = await sites.find();
+      res.json(result);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    try {
+      const result = await sites.find({ owner });
+      res.json(result);
+    } catch (error) {
+      console.log(error);
+    }
   }
 });
 
