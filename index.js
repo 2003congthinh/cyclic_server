@@ -212,5 +212,15 @@ app.post('/joinInSite', async (req, res) => {
   }
 });
 
+app.post('/getAccount', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const result = await accounts.find({ email });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const HTTP_PORT = process.env.PORT || 8000;
 app.listen(HTTP_PORT, () => console.log(`Express Server started on port ${HTTP_PORT}`));
