@@ -222,5 +222,15 @@ app.post('/getAccount', async (req, res) => {
   }
 });
 
+app.post('/getSiteDetails', async (req, res) => {
+  const { id } = req.body;
+  try {
+    const result = await sites.find({ id });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const HTTP_PORT = process.env.PORT || 8000;
 app.listen(HTTP_PORT, () => console.log(`Express Server started on port ${HTTP_PORT}`));
