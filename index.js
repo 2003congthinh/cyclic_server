@@ -195,11 +195,11 @@ app.post('/findSearchSites', async (req, res) => {
 });
 
 app.post('/joinInSite', async (req, res) => {
-  const { id, email } = req.body;
+  const { id, name } = req.body;
   try {
     const result = await sites.updateOne(
       { "id": id },
-      { $push: { "joined_people": email } }
+      { $push: { "joined_people": name } }
     );
 
     // Check if the update was successful
