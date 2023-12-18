@@ -113,6 +113,10 @@ app.post('/signup', async(req, res) => {
     if (accountExists) { 
       return res.status(400).json({ message: 'Email already registered' });
     }
+    const nameExists = await accounts.findOne({ name });
+    if (nameExists) { 
+      return res.status(400).json({ message: 'Name already existed' });
+    }
     const newAccount = new accounts({
       email,
       password,
