@@ -244,5 +244,22 @@ app.post('/getSiteDetails', async (req, res) => {
   }
 });
 
+app.post('/getSitesIJoined', async (req, res) => {
+  const { owner } = req.body;
+  try {
+    // Check if the user with the given name already joined
+    const userExists = await sites.exists({
+      "joined_people": { $in: [owner] }
+    });
+
+    if (userExists) {
+      res.json(result);
+    }
+    return res.status(401).json({ message: 'User already joined this site' });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const HTTP_PORT = process.env.PORT || 8000;
 app.listen(HTTP_PORT, () => console.log(`Express Server started on port ${HTTP_PORT}`));
