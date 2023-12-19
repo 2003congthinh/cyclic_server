@@ -197,6 +197,16 @@ app.post('/findSearchSites', async (req, res) => {
 app.post('/joinInSite', async (req, res) => {
   const { id, name } = req.body;
   try {
+    // Check if the user with the given name already joined
+    const userExists = await sites.exists({
+      "id": id,
+      "joined_people": { $in: [name] }
+    });
+
+    if (userExists) {
+      return res.status(400).json({ error: 'User already joined this site' });
+    }
+    
     const result = await sites.updateOne(
       { "id": id },
       { $push: { "joined_people": name } }
@@ -204,8 +214,6 @@ app.post('/joinInSite', async (req, res) => {
 
     // Check if the update was successful
     if (result.modifiedCount === 1) {
-      // Fetch the updated document
-      const updatedDocument = await sites.findOne({ "id": id });
       return res.status(200).json({ message: 'Site created successfully' });
     } else {
       res.status(404).json({ error: "Document not found or not updated." });
