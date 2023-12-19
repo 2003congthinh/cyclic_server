@@ -253,7 +253,7 @@ app.post('/getSitesIJoined', async (req, res) => {
     });
 
     if (userExists) {
-      res.json(result);
+      res.json(userExists);
     }
     return res.status(401).json({ message: 'User already joined this site' });
   } catch (error) {
