@@ -204,9 +204,9 @@ app.post('/joinInSite', async (req, res) => {
     });
 
     if (userExists) {
-      return res.status(400).json({ error: 'User already joined this site' });
+      return res.status(401).json({ message: 'User already joined this site' });
     }
-    
+
     const result = await sites.updateOne(
       { "id": id },
       { $push: { "joined_people": name } }
