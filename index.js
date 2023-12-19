@@ -248,7 +248,7 @@ app.post('/getSitesIJoined', async (req, res) => {
   const { owner } = req.body;
   try {
     // Check if the user with the given name already joined
-    const userExists = await sites.exists({
+    const userExists = await sites.find({
       "joined_people": { $in: [owner] }
     });
 
